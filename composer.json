@@ -1,0 +1,15 @@
+{
+    "name": "root/app",
+    "require-dev": {
+        "roave/security-advisories":"dev-master"
+    },
+    "require": {
+        "phpunit/phpunit": "^9.3",
+        "ramsey/uuid": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SolarSystem\\": "SolarSystem/"
+        }
+    }
+}

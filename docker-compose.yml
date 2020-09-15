@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  php:
+    image: bref/php-74-fpm-dev
+    volumes:
+      - .:/var/task
+  composer:
+    image: composer:latest
+    working_dir: /usr/app
+    volumes:
+      - .:/usr/app
