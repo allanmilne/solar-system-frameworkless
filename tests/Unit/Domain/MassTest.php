@@ -3,11 +3,12 @@
 namespace Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
+use SolarSystem\Domain\Mass;
 
 class MassTest extends TestCase
 {
-	public function test_mass_can_be_added_to_another_mass()
-	{
+	public function test_mass_can_be_added_to_another_mass(): void
+    {
         $earthMass      = new Mass(5.97E+24);
         $neptuneMass    = new Mass(1.02E+26);
 
@@ -18,13 +19,13 @@ class MassTest extends TestCase
 
         $this->assertAttributeEquals(1.0797E+26, 'value', $totalMass);
 
-        $this->assertNotSame($earthMass, $totalMass);
-        $this->assertNotSame($neptuneMass, $totalMass);
+        self::assertNotSame($earthMass, $totalMass);
+        self::assertNotSame($neptuneMass, $totalMass);
 
-        $this->assertInstanceOf(Mass::class, $totalMass);
+        self::assertInstanceOf(Mass::class, $totalMass);
     }
 
-    public function test_mass_can_calculate_the_sum_of_masses()
+    public function test_mass_can_calculate_the_sum_of_masses(): void
     {
         $light = new Mass(1);
         $heavy = new Mass(100);

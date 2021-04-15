@@ -3,9 +3,24 @@
 namespace Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
+use SolarSystem\Domain\AstronomicalUnit;
+use SolarSystem\Domain\HabitableZone;
+use SolarSystem\Domain\Mass;
+use SolarSystem\Domain\PlanetId;
+use SolarSystem\Domain\Radius;
+use SolarSystem\Domain\Range;
+use SolarSystem\Domain\SolarSystem;
+use SolarSystem\Domain\SolarSystemId;
+use SolarSystem\Domain\Star;
+use SolarSystem\Domain\StarId;
 
 class RangeTest extends TestCase
 {
+    /**
+     * @var SolarSystem
+     */
+    private $solarSystem;
+
     public function setUp(): void
     {
         $starId             = StarId::generate();
@@ -25,11 +40,11 @@ class RangeTest extends TestCase
                 'Sun',
                 new Radius(100000),
                 $starMass),
-                $habitableZone,
+                $habitableZone
         );
     }
 
-    public function test_range_can_detect_collision()
+    public function test_range_can_detect_collision(): void
     {
         $newRange   = new Range(
             new AstronomicalUnit(2.2),
@@ -45,11 +60,11 @@ class RangeTest extends TestCase
         );
 
         $objectWithinCollisionRange = new AstronomicalUnit(2.5);
-        $this->assertTrue(
+        self::assertTrue(
             $newRange->withinRange($objectWithinCollisionRange)
         );
 
-        $this->assertFalse(
+        self::assertFalse(
             $newRange->withinRange($planetDistance)
         );
     }

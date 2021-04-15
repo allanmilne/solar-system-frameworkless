@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class HabitableZone
 {
-    private $range;
+    private Range $range;
 
     public function __construct(Range $range)
     {

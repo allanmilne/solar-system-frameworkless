@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class Range
 {
-    private $innerEdge;
+    private AstronomicalUnit $innerEdge;
 
-    private $outerEdge;
+    private AstronomicalUnit $outerEdge;
 
     public function __construct(AstronomicalUnit $innerEdge, AstronomicalUnit $outerEdge)
     {

@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 use InvalidArgumentException;
 
-class InvalidRadius extends InvalidArgumentException
+final class InvalidRadius extends InvalidArgumentException
 {
 }

@@ -1,20 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class Star implements HasWeight
 {
-    private $id;
+    private StarId $id;
 
-    private $name;
-    
-    private $size;
-    
-    private $mass;
+    private string $name;
 
-    public function __construct(StarId $id, string $name, Radius $size, Mass $mass)
+    private Radius $size;
+
+    private Mass $mass;
+
+    public function __construct($id, string $name, Radius $size, Mass $mass)
     {
-        $this->id   = $id;
+        $this->id = $id;
         $this->name = $name;
         $this->size = $size;
         $this->mass = $mass;

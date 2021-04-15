@@ -1,115 +1,110 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 
 final class SolarSystem implements HasWeight
 {
-	private $id;
+    private SolarSystemId $id;
 
-	private $planets = [];
+    private Star $star;
 
-	private $star;
+    private HabitableZone $habitableZoneArea;
 
-	private $habitableZoneArea;
+    private array $planets = [];
 
-	private $asteroidBelts = [];
+    private array $asteroidBelts = [];
 
-	public function __construct(SolarSystemId $id, Star $star, HabitableZone $habitableZoneArea)
-	{
-		$this->id 					= $id;
-		$this->star 				= $star;
-		$this->habitableZoneArea	= $habitableZoneArea;
-	}
-
-	public function getId(): SolarSystemId
-	{
-		return $this->id;
-	}
-
-	public function discoverPlanet(PlanetId $planetId, string $planetName, AstronomicalUnit $distance, Mass $mass): void
+    public function __construct($id, Star $star, HabitableZone $habitableZoneArea)
     {
-		$this->detectPlanetClash($distance);
-		$this->detectAsteroidBeltOverlap($distance);
+        $this->id = $id;
+        $this->star = $star;
+        $this->habitableZoneArea = $habitableZoneArea;
+    }
 
-		$newPlanet = new Planet(
-			$planetId,
-			$planetName,
-			$distance,
-			$mass
-		);
+    public function getId(): SolarSystemId
+    {
+        return $this->id;
+    }
 
-		$this->planets[(string) $planetId] = $newPlanet;
-	}
+    public function discoverPlanet(PlanetId $planetId, string $planetName, AstronomicalUnit $distance, Mass $mass): void
+    {
+        $this->detectPlanetClash($distance);
+        $this->detectAsteroidBeltOverlap($distance);
 
-	public function removePlanet(PlanetId $planetId)
-	{
-		unset($this->planets[(string) $planetId]);
-	}
+        $newPlanet = new Planet(
+            $planetId,
+            $planetName,
+            $distance,
+            $mass
+        );
 
-	public function discoverAsteroidBelt(AsteroidBeltId $asteroidBeltId, Range $range, Mass $mass)
-	{
-		$this->detectPlanetOverlap($range);
+        $this->planets[(string)$planetId] = $newPlanet;
+    }
 
-		$newAsteroidBelt = new AsteroidBelt(
-			$asteroidBeltId,
-			$range,
-			$mass
-		);
+    private function detectPlanetClash(AstronomicalUnit $distance): void
+    {
+        foreach ($this->planets as $planet) {
+            if ($distance->getDistance() === $planet->getDistance()->getDistance()) {
+                throw new CollisionImminent ('Collision alert, cannot add Planet with same distance as another Planet!');
+            }
+        }
+    }
 
-		$this->asteroidBelts[(string) $asteroidBeltId] =  $newAsteroidBelt;
-	}
+    private function detectAsteroidBeltOverlap(AstronomicalUnit $distance): void
+    {
+        foreach ($this->asteroidBelts as $asteroidBelt) {
+            if ($asteroidBelt->range->withinRange($distance)) {
+                throw new CollisionImminent ('Collision alert, Planet is within Asteroid Belt!');
+            }
+        }
+    }
 
-	public function calculateMass(): Mass
-	{
-		$masses = [
-			$this->star->calculateMass()
-		];
-		foreach ($this->planets as $planet) {
-			$masses[] = $planet->calculateMass();
-		}
-		foreach ($this->asteroidBelts as $asteroidBelt) {
-			$masses[] = $asteroidBelt->calculateMass();
-		}
+    public function removePlanet(PlanetId $planetId): void
+    {
+        unset($this->planets[(string)$planetId]);
+    }
 
-		return Mass::sum(...$masses);
-	}
+    public function discoverAsteroidBelt(AsteroidBeltId $asteroidBeltId, Range $range, Mass $mass): void
+    {
+        $this->detectPlanetOverlap($range);
 
-	public function withinHabitableZone(AstronomicalUnit $distance): bool
-	{
+        $newAsteroidBelt = new AsteroidBelt(
+            $asteroidBeltId,
+            $range,
+            $mass
+        );
+
+        $this->asteroidBelts[(string)$asteroidBeltId] = $newAsteroidBelt;
+    }
+
+    private function detectPlanetOverlap(Range $range): void
+    {
+        foreach ($this->planets as $planet) {
+            if ($range->withinRange($planet->getDistance())) {
+                throw new CollisionImminent ('Collision alert, Planet is within Asteroid Belt range!');
+            }
+        }
+    }
+
+    public function calculateMass(): Mass
+    {
+        $masses = [
+            $this->star->calculateMass()
+        ];
+        foreach ($this->planets as $planet) {
+            $masses[] = $planet->calculateMass();
+        }
+        foreach ($this->asteroidBelts as $asteroidBelt) {
+            $masses[] = $asteroidBelt->calculateMass();
+        }
+
+        return Mass::sum(...$masses);
+    }
+
+    public function withinHabitableZone(AstronomicalUnit $distance): bool
+    {
         return $this->habitableZoneArea->withinZone($distance);
-	}
-
-	private function detectPlanetOverlap(Range $range): void
-    {
-		foreach ($this->planets as $planet)
-		{
-			if ($range->withinRange($planet->getDistance()))
-			{
-				throw new CollisionImminent ('Collision alert, Planet is within Asteroid Belt range!');
-			}
-		}
-	}
-
-	private function detectAsteroidBeltOverlap(AstronomicalUnit $distance): void
-    {
-		foreach ($this->asteroidBelts as $asteroidBelt)
-		{
-			if ($asteroidBelt->range->withinRange($distance))
-			{
-				throw new CollisionImminent ('Collision alert, Planet is within Asteroid Belt!');
-			}
-		}
-	}
-
-	private function detectPlanetClash(AstronomicalUnit $distance): void
-    {
-		foreach ($this->planets as $planet)
-		{
-			if ($distance->getDistance() === $planet->getDistance()->getDistance())
-			{
-				throw new CollisionImminent ('Collision alert, cannot add Planet with same distance as another Planet!');
-			}
-		}
-	}
+    }
 }

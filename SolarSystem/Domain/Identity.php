@@ -1,29 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\UuidInterface;
 
 abstract class Identity
 {
-    /**
-     * @var UuidInterface
-     */
-    private $value;
+    private UuidInterface $value;
 
-    public function __construct(string $value)
-	{
-		$this->value = Uuid::fromString($value);
-	}
+    public function __construct($value)
+    {
+        $this->value = UuidV4::fromString((string)$value);
+    }
 
-	public static function generate(): Identity
-	{
-		return new static((string) Uuid::uuid4());
-	}
+    public static function generate(): Identity
+    {
+        return new static(UuidV4::uuid4());
+    }
 
-	public function __toString(): string
-	{
-		return $this->value;
-	}
+    public function __toString(): string
+    {
+        return (string)$this->value;
+    }
 }

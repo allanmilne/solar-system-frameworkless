@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
-class InvalidDistance extends \InvalidArgumentException
+use InvalidArgumentException;
+
+final class InvalidDistance extends InvalidArgumentException
 {
 }

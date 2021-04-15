@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class Radius
 {
-    private $size;
+    private int $size;
 
     public function __construct(int $size)
     {

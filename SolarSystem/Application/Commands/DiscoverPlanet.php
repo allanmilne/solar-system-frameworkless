@@ -2,10 +2,10 @@
 
 namespace SolarSystem\Application\Commands;
 
+use SolarSystem\Domain\AstronomicalUnit;
 use SolarSystem\Domain\Mass;
 use SolarSystem\Domain\PlanetId;
 use SolarSystem\Domain\SolarSystemId;
-use SolarSystem\Domain\AstronomicalUnit;
 
 final class DiscoverPlanet
 {
@@ -21,11 +21,11 @@ final class DiscoverPlanet
 
     public function __construct(PlanetId $planetId, string $name, AstronomicalUnit $distance, Mass $mass, SolarSystemId $solarSystemId)
     {
-        $this->planetId         = $planetId;
-        $this->name             = $name;
-        $this->distance         = $distance;
-        $this->mass             = $mass;
-        $this->solarSystemId    = $solarSystemId;
+        $this->planetId = $planetId;
+        $this->name = $name;
+        $this->distance = $distance;
+        $this->mass = $mass;
+        $this->solarSystemId = $solarSystemId;
     }
 
     public function getPlanetId(): PlanetId

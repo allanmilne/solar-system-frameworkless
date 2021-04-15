@@ -1,23 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class Moon implements HasWeight
 {
-    private $id;
+    private MoonId $id;
 
-    private $name;
-    
-    private $distance;
-    
-    private $mass;
+    private string $name;
 
-    public function __construct(MoonId $id, string $name, AstronomicalUnit $distance, Mass $mass)
+    private AstronomicalUnit $distance;
+
+    private Mass $mass;
+
+    public function __construct($id, string $name, AstronomicalUnit $distance, Mass $mass)
     {
-        $this->id       = $id;
-        $this->name     = $name;
+        $this->id = $id;
+        $this->name = $name;
         $this->distance = $distance;
-        $this->mass     = $mass;
+        $this->mass = $mass;
     }
 
     public function getId(): MoonId

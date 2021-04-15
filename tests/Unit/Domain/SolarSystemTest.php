@@ -4,9 +4,11 @@ namespace Unit\Domain;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use SolarSystem\Domain\AsteroidBeltId;
 use SolarSystem\Domain\AstronomicalUnit;
 use SolarSystem\Domain\HabitableZone;
 use SolarSystem\Domain\Mass;
+use SolarSystem\Domain\PlanetId;
 use SolarSystem\Domain\Radius;
 use SolarSystem\Domain\Range;
 use SolarSystem\Domain\SolarSystem;
@@ -16,7 +18,7 @@ use SolarSystem\Domain\StarId;
 
 class SolarSystemTest extends TestCase
 {
-    private $solarSystem;
+    private SolarSystem $solarSystem;
 
     public function setUp(): void
     {
@@ -38,11 +40,11 @@ class SolarSystemTest extends TestCase
                 new Radius(100000),
                 $starMass
             ),
-            $habitableZone,
+            $habitableZone
         );
     }
 
-    public function test_solar_system_can_discover_planet()
+    public function test_solar_system_can_discover_planet(): void
     {
         $this->solarSystem->discoverPlanet(
             PlanetId::generate(),
@@ -61,7 +63,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeCount(2, 'planets', $this->solarSystem);
     }
 
-    public function test_solar_system_can_remove_planet()
+    public function test_solar_system_can_remove_planet(): void
     {
         $planetId = PlanetId::generate();
 
@@ -79,7 +81,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeCount(0, 'planets', $this->solarSystem);
     }
 
-    public function test_solar_system_can_return_planet_count()
+    public function test_solar_system_can_return_planet_count(): void
     {
         $this->solarSystem->discoverPlanet(
             PlanetId::generate(),
@@ -91,7 +93,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeCount(1, 'planets', $this->solarSystem);
     }
 
-    public function test_it_can_remove_a_specific_planet()
+    public function test_it_can_remove_a_specific_planet(): void
     {
         $earthId    = PlanetId::generate();
         $neptuneId  = PlanetId::generate();
@@ -117,7 +119,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeCount(1, 'planets', $this->solarSystem);
     }
 
-    public function test_solar_system_can_return_total_mass()
+    public function test_solar_system_can_return_total_mass(): void
     {
         $this->solarSystem->discoverPlanet(
             PlanetId::generate(),
@@ -138,7 +140,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeEquals(1.98910797E+30, 'value', $this->solarSystem->calculateMass());
     }
 
-    public function test_solar_system_can_check_if_planet_is_within_habitable_zone()
+    public function test_solar_system_can_check_if_planet_is_within_habitable_zone(): void
     {
         $planetId       = PlanetId::generate();
         $planetDistance = new AstronomicalUnit(1.0);
@@ -151,12 +153,12 @@ class SolarSystemTest extends TestCase
 
         $this->assertAttributeCount(1, 'planets', $this->solarSystem);
 
-        $this->assertTrue(
+        self::assertTrue(
             $this->solarSystem->withinHabitableZone($planetDistance)
         );
     }
 
-    public function test_solar_system_cannot_discover_planet_with_same_AU()
+    public function test_solar_system_cannot_discover_planet_with_same_AU(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Collision alert, cannot add Planet with same distance as another Planet!");
@@ -176,7 +178,7 @@ class SolarSystemTest extends TestCase
         );
     }
 
-    public function test_solar_system_can_add_asteroid_belt()
+    public function test_solar_system_can_add_asteroid_belt(): void
     {
         $this->assertAttributeCount(0, 'asteroidBelts', $this->solarSystem);
 
@@ -193,7 +195,7 @@ class SolarSystemTest extends TestCase
         $this->assertAttributeCount(1, 'asteroidBelts', $this->solarSystem);
     }
 
-    public function test_solar_system_cannot_discover_planet_within_Asteroid_Belt()
+    public function test_solar_system_cannot_discover_planet_within_Asteroid_Belt(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Collision alert, Planet is within Asteroid Belt!");
@@ -217,7 +219,7 @@ class SolarSystemTest extends TestCase
         );
     }
 
-    public function test_solar_system_cannot_discover_Asteroid_Belt_if_planet_within_range()
+    public function test_solar_system_cannot_discover_Asteroid_Belt_if_planet_within_range(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Collision alert, Planet is within Asteroid Belt range!");

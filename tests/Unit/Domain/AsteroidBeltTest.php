@@ -3,6 +3,11 @@
 namespace Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
+use SolarSystem\Domain\AsteroidBelt;
+use SolarSystem\Domain\AsteroidBeltId;
+use SolarSystem\Domain\AstronomicalUnit;
+use SolarSystem\Domain\Mass;
+use SolarSystem\Domain\Range;
 
 class AsteroidBeltTest extends TestCase
 {
@@ -24,6 +29,6 @@ class AsteroidBeltTest extends TestCase
 
         $this->assertAttributeEquals($outerBelt, 'outerEdge', $asteroidBeltRange);
 
-        $this->assertEquals($beltMass, $asteroidBelt->calculateMass());
+        self::assertEquals($beltMass, $asteroidBelt->calculateMass());
     }
 }
