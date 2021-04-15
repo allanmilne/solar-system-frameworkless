@@ -1,31 +1,32 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class Planet implements HasWeight
 {
-    private $id;
+    private PlanetId $id;
 
-    private $name;
+    private string $name;
 
-    private $distance;
+    private AstronomicalUnit $distance;
 
-    private $mass;
+    private Mass $mass;
 
-    private $moons = [];
+    private array $moons = [];
 
-    public function __construct(PlanetId $id, string $name, AstronomicalUnit $distance, Mass $mass)
+    public function __construct($id, string $name, AstronomicalUnit $distance, Mass $mass)
     {
-        $this->id       = $id;
-        $this->name     = $name;
+        $this->id = $id;
+        $this->name = $name;
         $this->distance = $distance;
-        $this->mass     = $mass;
+        $this->mass = $mass;
     }
 
     public function getId(): PlanetId
-	{
-		return $this->id;
-	}
+    {
+        return $this->id;
+    }
 
     public function getName(): string
     {
@@ -51,21 +52,8 @@ final class Planet implements HasWeight
             $mass
         );
 
-        $this->moons[(string) $moonId] = $newMoon;
+        $this->moons[(string)$moonId] = $newMoon;
     }
-
-    public function getTotalMassOfMoons(): Mass
-    {
-        $moonMasses = [];
-
-        foreach ($this->moons as $moon)
-        {
-            $moonMasses[] = $moon->calculateMass();
-        }
-
-        return Mass::sum(...$moonMasses);
-    }
-
 
     public function calculateMass(): Mass
     {
@@ -73,5 +61,16 @@ final class Planet implements HasWeight
             $this->mass,
             $this->getTotalMassOfMoons()
         );
+    }
+
+    public function getTotalMassOfMoons(): Mass
+    {
+        $moonMasses = [];
+
+        foreach ($this->moons as $moon) {
+            $moonMasses[] = $moon->calculateMass();
+        }
+
+        return Mass::sum(...$moonMasses);
     }
 }

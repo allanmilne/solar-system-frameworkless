@@ -1,28 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
 final class AsteroidBelt implements HasWeight
 {
-    private $id;
+    private AsteroidBeltId $id;
 
-    private $mass;
-    /**
-     * @var Range
-     */
-    private $range;
+    private Range $range;
 
-    public function __construct(AsteroidBeltId $id, Range $range, Mass $mass)
+    private Mass $mass;
+
+    public function __construct($id, Range $range, Mass $mass)
     {
-        $this->id       = $id;
-        $this->range    = $range;
-        $this->mass     = $mass;
+        $this->id = $id;
+        $this->range = $range;
+        $this->mass = $mass;
     }
 
     public function getId(): AsteroidBeltId
-	{
-		return $this->id;
-	}
+    {
+        return $this->id;
+    }
 
     public function calculateMass(): Mass
     {

@@ -1,29 +1,40 @@
 <?php
+declare(strict_types=1);
 
 namespace SolarSystem\Domain;
 
+use JetBrains\PhpStorm\Pure;
+
 final class Mass
 {
-    private $value;
+    private float $value;
 
     public function __construct(float $value)
     {
         $this->value = $value;
     }
 
-    public static function sum(Mass ...$masses): Mass
+    /**
+     * @return float
+     */
+    public function getValue(): float
+    {
+        return $this->value;
+    }
+
+    #[Pure] public static function sum(Mass ...$masses): Mass
     {
         $total = new Mass(0);
 
         foreach ($masses as $mass) {
-            $total = $total->add($mass);
+            $total = $total->add($mass->getValue());
         }
 
         return $total;
     }
 
-    public function add($value)
+    #[Pure] public function add($value): Mass
     {
-        return new Mass($this->value + $value->value);
+        return new Mass($this->value + $value);
     }
 }
