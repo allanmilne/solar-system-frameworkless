@@ -1,9 +1,11 @@
 {
     "name": "root/app",
+    "description": "Solar System project",
     "require-dev": {
-        "roave/security-advisories":"dev-master"
+        "roave/security-advisories":"dev-latest"
     },
     "require": {
+        "php": "^8.0",
         "phpunit/phpunit": "^9.3",
         "ramsey/uuid": "^4.1"
     },
